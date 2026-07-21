@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peek Travel Case Study | Tiffany Peña Mosele</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background-color: #080808;
+            color: var(--text-primary);
+        }
+
+        .project-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 8rem 2rem 6rem 2rem;
+        }
+
+        .back-link {
+            position: fixed;
+            top: 2.5rem;
+            left: 2.5rem;
+            z-index: 1001;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            transition: color var(--transition-medium), transform 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .back-link:hover {
+            color: var(--accent-color);
+            transform: translateX(-3px);
+        }
+
+        .project-header {
+            margin-bottom: 3.5rem;
+            text-align: center;
+        }
+
+        .project-title {
+            font-family: var(--font-heading);
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 900;
+            margin-bottom: 0.8rem;
+            line-height: 1.1;
+        }
+
+        .project-subtitle {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: 1.8fr 1fr;
+            gap: 4rem;
+            margin-bottom: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .project-grid {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+            .back-link {
+                position: absolute;
+                top: 2rem;
+                left: 2rem;
+            }
+            .project-container {
+                padding-top: 6rem;
+            }
+        }
+
+        .case-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .case-section h2 {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 1.2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 0.5rem;
+        }
+
+        .case-section p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin-bottom: 1.2rem;
+        }
+
+        /* Sidebar styling */
+        .project-sidebar {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 8px;
+            height: fit-content;
+        }
+
+        .sidebar-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .sidebar-label {
+            display: block;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-secondary);
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+        }
+
+        .sidebar-value {
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .sidebar-value a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar-value a:hover {
+            opacity: 0.8;
+        }
+
+        /* Image Display */
+        .project-image-showcase {
+            margin: 4rem 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .project-image-showcase img {
+            width: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        /* Key Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 576px) {
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.8rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .metric-number {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--accent-color);
+            margin-bottom: 0.4rem;
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        /* Results List Styling */
+        .case-section ul {
+            list-style: none;
+            padding-left: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .case-section li {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.8;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .case-section li::before {
+            content: '✦';
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="index.html" class="back-link">← Back to Home</a>
+
+    <main class="project-container">
+        <!-- Header -->
+        <header class="project-header">
+            <h1 class="project-title">Peek Travel</h1>
+            <p class="project-subtitle">Marketing Ops &amp; ABM Assistant</p>
+        </header>
+
+        <!-- Project Image Showcase -->
+        <div class="project-image-showcase">
+            <img src="peek_project.png" alt="Peek Travel Booking Experience and Campaign Analytics Mockup">
+        </div>
+
+        <!-- Key Metrics Section -->
+        <section class="case-section">
+            <h2>Key Accomplishments</h2>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-number">123%</div>
+                    <div class="metric-label">of 2023 Annual Revenue Goal Exceeded</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-number">6.8x</div>
+                    <div class="metric-label">Return on Ad Spend</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-number">40+</div>
+                    <div class="metric-label">ABM Campaigns Executed</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content & Sidebar -->
+        <div class="project-grid">
+            <div class="project-content">
+                <div class="case-section">
+                    <h2>Challenge</h2>
+                    <ul>
+                        <li>Cleaning and formatting prospect lists was a fully manual process, taking several days of work per cycle and slowing down ABM campaign execution.</li>
+                        <li>High-value travel operators needed specialized, high-touch campaigns to move through the sales pipeline.</li>
+                    </ul>
+                </div>
+
+                <div class="case-section">
+                    <h2>Strategy</h2>
+                    <ul>
+                        <li>Built an AI-powered automation script in Google Sheets that automatically pulled and filled in missing account data, reducing list hygiene from several days to one hour.</li>
+                        <li>Planned and executed 40+ ABM campaigns with custom messaging, automated direct outreach, and tailored landing assets targeting 100–500 prospect accounts per tier.</li>
+                    </ul>
+                </div>
+
+                <div class="case-section">
+                    <h2>Outcome</h2>
+                    <ul>
+                        <li>Closed a major enterprise travel provider through a hyper-personalized 1:1 ABM sequence.</li>
+                        <li>Campaigns drove installs to 164% of goal and nearly doubled the demo-to-install conversion rate, achieving a 6.8 ROAS against a 5.2 target.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Sidebar details -->
+            <aside class="project-sidebar">
+                <div class="sidebar-group">
+                    <span class="sidebar-label">Client</span>
+                    <span class="sidebar-value">Peek Travel (Travel Software)</span>
+                </div>
+                <div class="sidebar-group">
+                    <span class="sidebar-label">Role</span>
+                    <span class="sidebar-value">Marketing Ops &amp; ABM Assistant</span>
+                </div>
+                <div class="sidebar-group">
+                    <span class="sidebar-label">Timeline</span>
+                    <span class="sidebar-value">Jan 2021 – April 2024</span>
+                </div>
+                <div class="sidebar-group">
+                    <span class="sidebar-label">Core Tools</span>
+                    <span class="sidebar-value">Google Sheets (JS Apps Script), Salesforce CRM, HubSpot, Gong, Outreach, ChatGPT</span>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <footer style="padding: 4rem 0 2rem 0; border-top: 1px solid rgba(255, 255, 255, 0.03); text-align: center; font-size: 0.8rem; color: #444;">
+        <p>&copy; 2026 Tiffany Peña Mosele. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>

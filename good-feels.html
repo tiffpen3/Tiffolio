@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Good Feels | TPM Strategic Marketing Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background-color: #080808;
+            color: var(--text-primary);
+        }
+
+        .project-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 8rem 2rem 6rem 2rem;
+        }
+
+        .back-link {
+            position: fixed;
+            top: 2.5rem;
+            left: 2.5rem;
+            z-index: 1001;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            transition: color var(--transition-medium), transform 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .back-link:hover {
+            color: var(--accent-color);
+            transform: translateX(-3px);
+        }
+
+        .project-header {
+            margin-bottom: 3.5rem;
+            text-align: center;
+        }
+
+        .project-title {
+            font-family: var(--font-heading);
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 900;
+            margin-bottom: 0.8rem;
+            line-height: 1.1;
+        }
+
+        .project-subtitle {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: 1.8fr 1fr;
+            gap: 4rem;
+            margin-bottom: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .project-grid {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+            .back-link {
+                position: absolute;
+                top: 2rem;
+                left: 2rem;
+            }
+            .project-container {
+                padding-top: 6rem;
+            }
+        }
+
+        .case-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .case-section h2 {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 1.2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 0.5rem;
+        }
+
+        .case-section p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin-bottom: 1.2rem;
+        }
+
+        /* Sidebar styling */
+        .project-sidebar {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 8px;
+            height: fit-content;
+        }
+
+        .sidebar-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .sidebar-label {
+            display: block;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-secondary);
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+        }
+
+        .sidebar-value {
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .sidebar-value a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar-value a:hover {
+            opacity: 0.8;
+        }
+
+        /* Image Display */
+        .project-image-showcase {
+            margin: 4rem 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .project-image-showcase img {
+            width: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        /* Key Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 576px) {
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.8rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .metric-number {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--accent-color);
+            margin-bottom: 0.4rem;
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        /* Results List Styling */
+        .case-section ul {
+            list-style: none;
+            padding-left: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .case-section li {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.8;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .case-section li::before {
+            content: '✦';
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+            font-size: 0.85rem;
+        }
+
+        /* Image Gallery Base */
+        .gallery-img-wrapper {
+            margin-bottom: 1.5rem;
+        }
+        .gallery-img-wrapper img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+        .gallery-img-wrapper img:hover {
+            transform: scale(1.02);
+        }
+
+        /* Side-by-Side Equal Height Gallery */
+        .side-by-side-gallery {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .side-by-side-gallery .gallery-img-wrapper {
+            margin-bottom: 0;
+            display: flex;
+        }
+        .side-by-side-gallery img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+        @media (max-width: 768px) {
+            .side-by-side-gallery {
+                flex-direction: column;
+            }
+            .side-by-side-gallery .gallery-img-wrapper {
+                margin-bottom: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a href="index.html" class="back-link">← Back to Home</a>
+
+    <main class="project-container">
+        <!-- Header -->
+        <header class="project-header">
+            <h1 class="project-title">Good Feels</h1>
+            <p class="project-subtitle">Marketing Consultant</p>
+        </header>
+
+        <!-- Main Content & Sidebar -->
+        <div class="project-grid">
+            <div class="project-content">
+                <div class="case-section">
+                    <h2>The Challenge</h2>
+                    <ul>
+                        <li>Early-stage beverage brand with no existing visual identity, no social presence, and no marketing foundation. Needed to build brand recognition from scratch ahead of launch.</li>
+                    </ul>
+                </div>
+
+                <div class="case-section">
+                    <h2>What I Did</h2>
+                    <ul>
+                        <li>Developed the Instagram visual strategy and planned the grid aesthetic before a single post went live</li>
+                        <li>Directed and managed brand photography to establish a consistent visual identity</li>
+                        <li>Designed swag campaign assets for the brand launch sweepstakes</li>
+                    </ul>
+                </div>
+
+                <div class="case-section">
+                    <h2>The Work</h2>
+                    
+                    <!-- Featured Image (Full Width) -->
+                    <div class="gallery-img-wrapper" style="margin-top: 1.5rem;">
+                        <img src="good_feels_2.jpg?v=2" alt="Good Feels Giveaway Thank You Card">
+                    </div>
+
+                    <!-- 2-Column Side-by-Side Grid (Equal Height) -->
+                    <div class="side-by-side-gallery">
+                        <div class="gallery-img-wrapper" style="flex: 992;">
+                            <img src="good_feels_4.png" alt="Good Feels Instagram Grid Strategy">
+                        </div>
+                        <div class="gallery-img-wrapper" style="flex: 758;">
+                            <img src="good_feels_3.jpg" alt="Good Feels Beverage Product Photography">
+                        </div>
+                    </div>
+
+                    <!-- Featured Image (Full Width) -->
+                    <div class="gallery-img-wrapper">
+                        <img src="good_feels_1.jpg" alt="Good Feels Brand Swag Package">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar details -->
+            <aside class="project-sidebar">
+                <div class="sidebar-group">
+                    <span class="sidebar-label">Client</span>
+                    <span class="sidebar-value">Good Feels — Beverage Production</span>
+                </div>
+                <div class="sidebar-group">
+                    <span class="sidebar-label">Role</span>
+                    <span class="sidebar-value">Marketing Consultant</span>
+                </div>
+                <div class="sidebar-group">
+                    <span class="sidebar-label">Timeline</span>
+                    <span class="sidebar-value">Oct 2020 – Nov 2021</span>
+                </div>
+                <div class="sidebar-group">
+                    <span class="sidebar-label">Core Tools</span>
+                    <span class="sidebar-value">Canva, Figma, Google Forms</span>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <footer style="padding: 4rem 0 2rem 0; border-top: 1px solid rgba(255, 255, 255, 0.03); text-align: center; font-size: 0.8rem; color: #444;">
+        <p>&copy; 2026 Tiffany Peña Mosele. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>
