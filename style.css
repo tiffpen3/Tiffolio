@@ -993,16 +993,14 @@ footer {
         padding: 5.5rem 0 0.8rem 0;
     }
 
-    /* Experience rows — stack date below company name */
-    .experience-bar-row {
-        flex-wrap: wrap;
-        gap: 0.2rem;
+    /* Experience rows — scale down to fit on one line */
+    .experience-bar-item .company {
+        font-size: 1rem;
     }
 
     .experience-bar-item .date {
-        font-size: 0.78rem;
-        width: 100%;
-        text-align: left;
+        font-size: 0.75rem;
+        white-space: nowrap;
     }
 
     /* Work tab project items */
