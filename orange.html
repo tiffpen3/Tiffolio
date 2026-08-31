@@ -94,6 +94,40 @@
             .project-container {
                 padding-top: 6rem;
             }
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .project-container {
+                padding: 7rem 1.2rem 4rem 1.2rem;
+            }
+            .back-link {
+                font-size: 0.65rem;
+                letter-spacing: 1.5px;
+                top: 1.2rem;
+                left: 1.2rem;
+            }
+            .project-title {
+                font-size: clamp(2rem, 9vw, 3rem);
+            }
+            .case-section h2 {
+                font-size: 1.4rem;
+            }
+            .metrics-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .metric-card {
+                padding: 1.2rem;
+            }
+            .metric-number {
+                font-size: 2rem;
+            }
+            .project-sidebar {
+                padding: 1.2rem;
+            }
         }
 
         .case-section {

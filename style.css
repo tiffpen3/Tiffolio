@@ -959,3 +959,172 @@ footer {
     background: #dc2626;
     transform: scale(1.1);
 }
+
+/* ============================================
+   RESPONSIVE — TABLET & LARGE PHONE (≤768px)
+   ============================================ */
+@media (max-width: 768px) {
+    /* Nav */
+    nav {
+        padding: 0 1.2rem;
+    }
+
+    .logo {
+        font-size: 1.3rem;
+    }
+
+    .nav-tab-btn {
+        font-size: 0.7rem;
+        padding: 0.4rem 0.5rem;
+        letter-spacing: 1.5px;
+    }
+
+    /* Hero */
+    #profile-hero {
+        padding: 7rem 0 1.5rem 0;
+    }
+
+    #profile-hero h1 {
+        white-space: normal; /* Allow name to wrap on narrow screens */
+        font-size: clamp(1.6rem, 7vw, 2.8rem);
+    }
+
+    .profile-collapsed #profile-hero {
+        padding: 5.5rem 0 0.8rem 0;
+    }
+
+    /* Experience rows — stack date below company name */
+    .experience-bar-row {
+        flex-wrap: wrap;
+        gap: 0.2rem;
+    }
+
+    .experience-bar-item .date {
+        font-size: 0.78rem;
+        width: 100%;
+        text-align: left;
+    }
+
+    /* Work tab project items */
+    .project-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        padding: 1.5rem 0;
+    }
+
+    .project-item:hover {
+        padding: 1.5rem 0.8rem;
+    }
+
+    .project-item h3 {
+        font-size: 1.4rem;
+    }
+
+    .project-details {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+    }
+
+    /* Reformatter */
+    .reformatter-container {
+        padding: 1.5rem;
+    }
+
+    .reformatter-info h2 {
+        font-size: 1.4rem;
+    }
+
+    /* Tabs section bottom padding */
+    #tabs-section {
+        padding: 1.5rem 0 4rem 0;
+    }
+
+    /* Footer */
+    footer {
+        padding: 2rem 0;
+    }
+}
+
+/* ============================================
+   RESPONSIVE — PHONE (≤480px)
+   ============================================ */
+@media (max-width: 480px) {
+    /* Nav — keep everything on one line */
+    .logo {
+        font-size: 1.1rem;
+        letter-spacing: -1px;
+    }
+
+    .header-nav-tabs {
+        gap: 0.3rem;
+    }
+
+    .nav-tab-btn {
+        font-size: 0.62rem;
+        padding: 0.35rem 0.4rem;
+        letter-spacing: 1px;
+    }
+
+    /* Hero */
+    #profile-hero {
+        padding: 6rem 0 1rem 0;
+    }
+
+    .profile-image-wrapper {
+        width: 120px;
+        height: 120px;
+    }
+
+    .bio-text {
+        font-size: 1rem;
+    }
+
+    /* Social links — reduce gap so they fit on one line */
+    .social-links {
+        gap: 1.2rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .social-links a {
+        font-size: 0.68rem;
+        letter-spacing: 1.5px;
+    }
+
+    /* Reformatter */
+    .reformatter-container {
+        padding: 1.2rem 1rem;
+        border-radius: 8px;
+    }
+
+    .reformatter-info h2 {
+        font-size: 1.25rem;
+    }
+
+    .reformatter-info p {
+        font-size: 0.88rem;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .primary-btn,
+    .secondary-btn {
+        flex: unset;
+        width: 100%;
+    }
+
+    /* Footer */
+    footer {
+        padding: 1.5rem 0;
+        font-size: 0.72rem;
+    }
+
+    /* Skill tags — slightly smaller */
+    .skill-tag {
+        font-size: 0.75rem;
+        padding: 0.35rem 0.75rem;
+    }
+}
