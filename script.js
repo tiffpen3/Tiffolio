@@ -170,112 +170,162 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function handleFiles(files) {
         const incomingFiles = Array.from(files).filter(file => {
-            const isImageMime = file.type && file.type.startsWith('image/');
-            const hasImageExtension = /\.(jpe?g|png|gif|webp|svg|heic|heif)$/i.test(file.name);
-            return isImageMime || hasImageExtension;
+            const isPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
+            const isImage = (file.type && file.type.startsWith('image/')) || /\.(jpe?g|png|gif|webp|svg|heic|heif)$/i.test(file.name);
+            return isPdf || isImage;
         });
-        
+
         if (incomingFiles.length === 0) {
-            alert('Please select valid image files.');
+            alert('Please select valid image or PDF files.');
             return;
         }
 
         const currentCount = fileQueue.length;
         let filesToLoad = incomingFiles;
-        
+
         if (currentCount + incomingFiles.length > 5) {
             const allowed = 5 - currentCount;
             if (allowed <= 0) {
-                alert('You have already reached the maximum limit of 5 images.');
+                alert('You have already reached the maximum limit of 5 files.');
                 return;
             }
-            alert(`You can upload a maximum of 5 images. Only the first ${allowed} additional image(s) will be loaded.`);
+            alert(`You can upload a maximum of 5 files. Only the first ${allowed} additional file(s) will be loaded.`);
             filesToLoad = incomingFiles.slice(0, allowed);
         }
 
-        let loadedCount = 0;
-        const targetLoadCount = filesToLoad.length;
+        // pendingCount tracks how many files still need to finish loading
+        let pendingCount = filesToLoad.length;
+        let resolved = 0;
+
+        function onFileResolved() {
+            resolved++;
+            if (resolved >= pendingCount) {
+                finalizeLoad();
+            }
+        }
+
+        function finalizeLoad() {
+            if (fileQueue.length > 0) {
+                const downloadStatus = document.getElementById('download-status');
+                if (downloadStatus) downloadStatus.style.display = 'none';
+                dropZone.style.display = 'none';
+                canvas.style.display = 'block';
+                thumbnailQueue.style.display = 'flex';
+                btnDownload.removeAttribute('disabled');
+                btnReset.style.display = 'block';
+                if (activeIndex === -1) activeIndex = 0;
+                updateQueueUI();
+                processImage();
+            } else {
+                resetReformatter();
+            }
+        }
 
         filesToLoad.forEach(file => {
+            const isPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
             const isHeic = /\.(heic|heif)$/i.test(file.name) || (file.type && (file.type.includes('heic') || file.type.includes('heif')));
 
-            if (isHeic) {
+            if (isPdf) {
+                loadPdfFile(
+                    file,
+                    (pageItem) => {
+                        fileQueue.push(pageItem);
+                        if (activeIndex === -1) activeIndex = 0;
+                    },
+                    onFileResolved,
+                    (err) => {
+                        console.error('PDF load error:', err);
+                        alert(`Failed to load PDF "${file.name}". ${err.message || ''}`);
+                        onFileResolved();
+                    }
+                );
+            } else if (isHeic) {
                 if (window.heic2any) {
-                    heic2any({
-                        blob: file,
-                        toType: 'image/jpeg',
-                        quality: 0.9
-                    })
-                    .then(convertedBlob => {
-                        const blob = Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob;
-                        const newFileName = file.name.replace(/\.(heic|heif)$/i, '') + '.jpg';
-                        const convertedFile = new File([blob], newFileName, { type: 'image/jpeg' });
-                        loadImageFile(convertedFile);
-                    })
-                    .catch(err => {
-                        console.error('HEIC conversion error:', err);
-                        alert(`Failed to convert HEIC image "${file.name}".`);
-                        loadedCount++;
-                        checkAllLoaded();
-                    });
+                    heic2any({ blob: file, toType: 'image/jpeg', quality: 0.9 })
+                        .then(convertedBlob => {
+                            const blob = Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob;
+                            const newFileName = file.name.replace(/\.(heic|heif)$/i, '') + '.jpg';
+                            const convertedFile = new File([blob], newFileName, { type: 'image/jpeg' });
+                            loadImageFile(convertedFile, onFileResolved);
+                        })
+                        .catch(err => {
+                            console.error('HEIC conversion error:', err);
+                            alert(`Failed to convert HEIC image "${file.name}".`);
+                            onFileResolved();
+                        });
                 } else {
-                    alert(`HEIC converter library is still loading. Please wait a moment and try again, or upload standard formats like JPG, PNG, WebP, or SVG.`);
-                    loadedCount++;
-                    checkAllLoaded();
+                    alert('HEIC converter library is still loading. Please wait a moment and try again.');
+                    onFileResolved();
                 }
             } else {
-                loadImageFile(file);
+                loadImageFile(file, onFileResolved);
             }
         });
 
-        function loadImageFile(file) {
+        function loadImageFile(file, callback) {
             const reader = new FileReader();
             reader.onload = (event) => {
                 const img = new Image();
                 img.onload = () => {
-                    fileQueue.push({
-                        file: file,
-                        img: img,
-                        name: file.name
-                    });
-
-                    loadedCount++;
-                    checkAllLoaded();
+                    fileQueue.push({ file, img, name: file.name });
+                    callback();
                 };
                 img.onerror = () => {
-                    alert(`Failed to load image "${file.name}". Your browser may not support this format directly. Please try standard formats like JPG, PNG, WebP, or SVG.`);
-                    loadedCount++;
-                    checkAllLoaded();
+                    alert(`Failed to load image "${file.name}". Please try a standard format like JPG, PNG, or WebP.`);
+                    callback();
                 };
                 img.src = event.target.result;
             };
             reader.readAsDataURL(file);
         }
+    }
 
-        function checkAllLoaded() {
-            if (loadedCount === targetLoadCount) {
-                if (fileQueue.length > 0) {
-                    const downloadStatus = document.getElementById('download-status');
-                    if (downloadStatus) downloadStatus.style.display = 'none';
-
-                    // All valid images loaded, transition UI states
-                    dropZone.style.display = 'none';
-                    canvas.style.display = 'block';
-                    thumbnailQueue.style.display = 'flex';
-                    btnDownload.removeAttribute('disabled');
-                    btnReset.style.display = 'block';
-
-                    if (activeIndex === -1) {
-                        activeIndex = 0;
-                    }
-
-                    updateQueueUI();
-                    processImage();
-                } else {
-                    // If no files were successfully loaded into the queue
-                    resetReformatter();
-                }
+    // Renders every page of a PDF into the image queue via PDF.js
+    async function loadPdfFile(file, onPageReady, onComplete, onError) {
+        try {
+            if (typeof pdfjsLib === 'undefined') {
+                throw new Error('PDF.js library failed to load. Please check your connection and try again.');
             }
+
+            // Point PDF.js at its CDN worker
+            pdfjsLib.GlobalWorkerOptions.workerSrc =
+                'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+            const arrayBuffer = await file.arrayBuffer();
+            const pdfDoc = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+            const numPages = pdfDoc.numPages;
+            const baseName = file.name.replace(/\.pdf$/i, '');
+
+            for (let pageNum = 1; pageNum <= numPages; pageNum++) {
+                const page = await pdfDoc.getPage(pageNum);
+                const viewport = page.getViewport({ scale: 2 }); // 2× scale = crisp output
+
+                const tempCanvas = document.createElement('canvas');
+                tempCanvas.width = viewport.width;
+                tempCanvas.height = viewport.height;
+                const tempCtx = tempCanvas.getContext('2d');
+
+                await page.render({ canvasContext: tempCtx, viewport }).promise;
+
+                // Convert rendered page canvas → Image element for the queue
+                const dataURL = tempCanvas.toDataURL('image/png');
+                const img = new Image();
+                await new Promise((resolve, reject) => {
+                    img.onload = resolve;
+                    img.onerror = reject;
+                    img.src = dataURL;
+                });
+
+                const pageName = numPages > 1
+                    ? `${baseName}_page${pageNum}.png`
+                    : `${baseName}.png`;
+
+                onPageReady({ img, name: pageName, file });
+            }
+
+            onComplete();
+        } catch (err) {
+            onError(err);
         }
     }
 
@@ -311,11 +361,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Update button text
         const total = fileQueue.length;
         if (total > 1) {
-            btnDownload.innerText = `Reformat ${total} Images`;
+            btnDownload.innerText = `Reformat ${total} Files`;
         } else if (total === 1) {
-            btnDownload.innerText = 'Reformat Image';
+            btnDownload.innerText = 'Reformat File';
         } else {
-            btnDownload.innerText = 'Reformat Image';
+            btnDownload.innerText = 'Reformat File';
             btnDownload.setAttribute('disabled', 'true');
         }
     }
@@ -350,7 +400,7 @@ document.addEventListener('DOMContentLoaded', () => {
         canvas.style.display = 'none';
         thumbnailQueue.style.display = 'none';
         btnDownload.setAttribute('disabled', 'true');
-        btnDownload.innerText = 'Reformat Image';
+        btnDownload.innerText = 'Reformat File';
         btnReset.style.display = 'none';
         dropZone.style.display = 'flex';
         

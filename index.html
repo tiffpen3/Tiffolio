@@ -221,8 +221,8 @@
                 <div class="tab-content" id="tab-vibe-tool">
                     <div class="reformatter-container">
                         <div class="reformatter-info">
-                            <h2>Image Reformatter</h2>
-                            <p>Easily reformat your image files into JPG, PNG, SVG, or PDF, completely free! Upload up to 5 photos at once. Check your downloads for the final product.</p>
+                            <h2>The Great Reformatter</h2>
+                            <p>Convert images <em>and</em> PDFs into JPG, PNG, SVG, or PDF — completely free! Upload up to 5 files at once. Multi-page PDFs export as separate images in a ZIP.</p>
                         </div>
                         
                         <div class="reformatter-grid">
@@ -231,9 +231,9 @@
                                 <div class="canvas-wrapper">
                                     <div class="drag-drop-zone" id="drop-zone">
                                         <div class="upload-icon">✦</div>
-                                        <p>Drag & Drop up to 5 photos here, or <span>browse files</span></p>
+                                        <p>Drag &amp; Drop images or PDFs here, or <span>browse files</span></p>
                                     </div>
-                                    <input type="file" id="image-upload" accept="image/*" multiple style="display: none;">
+                                    <input type="file" id="image-upload" accept="image/*,.pdf,application/pdf" multiple style="display: none;">
                                     <canvas id="canvas-preview" style="display: none;"></canvas>
                                 </div>
                                 <div class="thumbnail-queue-container" id="thumbnail-queue" style="display: none;"></div>
@@ -294,6 +294,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/heic2any/dist/heic2any.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script src="script.js?cb=20260701e"></script>
 </body>
 
